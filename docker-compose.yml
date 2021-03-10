@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - animes-lobby
+    environment:
+      POSTGRES_USER: animeslobby
+      POSTGRES_DB: animesdb
+      POSTGRES_PASSWORD: PC1112131415
+  app:
+    working_dir: /app
+    image: node:alpine
+    command: yarn start
+    networks:
+      - animes-lobby
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app
+    depends_on:
+      - db
+networks:
+  animes-lobby:
+    driver: bridge
